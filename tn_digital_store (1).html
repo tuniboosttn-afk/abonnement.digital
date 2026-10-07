@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DigiTN | متجرك الأول للاشتراكات الرقمية في تونس</title>
+<meta name="description" content="اشتراكات ChatGPT Plus، Netflix، Spotify، Canva و IPTV بأفضل الأسعار في تونس. دفع عبر Flouci، D17، تحويل بنكي أو نقداً." />
+
+<!-- Google Fonts: Cairo (titles) + Tajawal (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+/* =========================================================
+   1. DESIGN TOKENS
+   ========================================================= */
+:root{
+  --bg:#05070f;
+  --bg-2:#0a0f1f;
+  --surface:rgba(255,255,255,.04);
+  --surface-2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.09);
+  --text:#e8edf7;
+  --muted:#8b96b0;
+  --cyan:#22d3ee;
+  --emerald:#10b981;
+  --emerald-2:#34d399;
+  --glow:0 0 40px rgba(34,211,238,.25);
+  --radius:22px;
+  --font-title:'Cairo',sans-serif;
+  --font-body:'Tajawal',sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+/* Ambient background glow */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(600px 400px at 85% 10%, rgba(16,185,129,.10), transparent 60%),
+    radial-gradient(700px 500px at 10% 60%, rgba(34,211,238,.08), transparent 60%),
+    var(--bg);
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.container{width:min(1200px,92%);margin-inline:auto}
+h1,h2,h3{font-family:var(--font-title);line-height:1.3}
+
+.grad-text{
+  background:linear-gradient(90deg,var(--emerald-2),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  font-family:var(--font-title);font-weight:700;font-size:1rem;
+  padding:.95rem 2rem;border-radius:999px;border:none;cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--emerald),var(--cyan));
+  color:#03140f;
+  box-shadow:0 10px 30px rgba(16,185,129,.35);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(34,211,238,.45)}
+.btn-ghost{
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border);backdrop-filter:blur(12px);
+}
+.btn-ghost:hover{background:var(--surface-2);transform:translateY(-3px)}
+.btn svg{width:20px;height:20px}
+
+/* Glass utility */
+.glass{
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--border);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+
+/* Section titles */
+section{padding:100px 0}
+.section-head{text-align:center;max-width:640px;margin:0 auto 56px}
+.eyebrow{
+  display:inline-block;font-size:.85rem;font-weight:700;color:var(--emerald-2);
+  padding:.35rem 1rem;border-radius:999px;margin-bottom:1rem;
+  background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);
+}
+.section-head h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:.8rem}
+.section-head p{color:var(--muted);font-size:1.08rem}
+
+/* =========================================================
+   2. NAVBAR
+   ========================================================= */
+.nav{
+  position:fixed;top:16px;inset-inline:0;z-index:100;
+  transition:top .3s ease;
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.8rem 1.4rem;border-radius:999px;
+}
+.nav.scrolled .nav-inner{background:rgba(5,7,15,.75);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.logo{font-family:var(--font-title);font-weight:900;font-size:1.5rem;display:flex;align-items:center;gap:.5rem}
+.logo-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--emerald);box-shadow:0 0 14px var(--emerald);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{50%{box-shadow:0 0 26px var(--cyan);background:var(--cyan)}}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{padding:.6rem 1.3rem;font-size:.92rem}
+.burger{display:none;background:none;border:none;color:var(--text);cursor:pointer}
+.burger svg{width:28px;height:28px}
+
+/* =========================================================
+   3. HERO WITH BACKGROUND VIDEO
+   ========================================================= */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  padding:140px 0 80px;overflow:hidden;
+}
+.hero-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;
+}
+/* Animated neon fallback: visible if the video is missing or still loading */
+.hero-fallback{
+  position:absolute;inset:0;z-index:-4;
+  background:
+    linear-gradient(rgba(34,211,238,.07) 1px,transparent 1px) 0 0/60px 60px,
+    linear-gradient(90deg,rgba(34,211,238,.07) 1px,transparent 1px) 0 0/60px 60px,
+    radial-gradient(circle at 30% 40%,rgba(16,185,129,.35),transparent 45%),
+    radial-gradient(circle at 75% 65%,rgba(34,211,238,.3),transparent 45%),
+    var(--bg);
+  animation:gridMove 18s linear infinite;
+}
+@keyframes gridMove{to{background-position:60px 60px,60px 60px,0 0,0 0,0 0}}
+/* Dark readability overlay */
+.hero-overlay{
+  position:absolute;inset:0;z-index:-2;
+  background:
+    linear-gradient(180deg,rgba(5,7,15,.55) 0%,rgba(5,7,15,.75) 60%,var(--bg) 100%),
+    radial-gradient(ellipse at center,transparent 0%,rgba(5,7,15,.6) 80%);
+}
+.hero-content{text-align:center;max-width:860px;margin-inline:auto}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.45rem 1.1rem;border-radius:999px;font-size:.9rem;margin-bottom:1.6rem;
+}
+.hero-badge span{width:8px;height:8px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald)}
+.hero h1{font-size:clamp(2.2rem,6vw,4.2rem);font-weight:900;margin-bottom:1.2rem}
+.hero p{font-size:clamp(1.05rem,2vw,1.25rem);color:#c4cde0;max-width:620px;margin:0 auto 2.4rem}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+  margin-top:4rem;padding:1.4rem;border-radius:var(--radius);
+}
+.stat strong{display:block;font-family:var(--font-title);font-size:1.9rem;font-weight:800}
+.stat small{color:var(--muted);font-size:.95rem}
+.scroll-hint{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  width:26px;height:42px;border:2px solid var(--border);border-radius:20px;
+}
+.scroll-hint::after{
+  content:"";position:absolute;top:8px;left:50%;width:4px;height:8px;margin-left:-2px;
+  background:var(--cyan);border-radius:4px;animation:scrollDot 1.6s infinite;
+}
+@keyframes scrollDot{to{transform:translateY(14px);opacity:0}}
+
+/* =========================================================
+   4. PRODUCTS
+   ========================================================= */
+.filters{display:flex;justify-content:center;flex-wrap:wrap;gap:.7rem;margin-bottom:44px}
+.filter-btn{
+  font-family:var(--font-title);font-weight:600;font-size:.95rem;
+  padding:.6rem 1.4rem;border-radius:999px;cursor:pointer;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);transition:all .25s;
+}
+.filter-btn:hover{color:var(--text)}
+.filter-btn.active{
+  color:#03140f;border-color:transparent;
+  background:linear-gradient(135deg,var(--emerald),var(--cyan));
+}
+
+.grid{
+  display:grid;gap:28px;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+}
+.card{
+  --accent:var(--emerald);
+  position:relative;display:flex;flex-direction:column;
+  border-radius:var(--radius);overflow:hidden;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .4s;
+}
+.card:hover{
+  transform:translateY(-10px);
+  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+  box-shadow:0 25px 60px -15px color-mix(in srgb,var(--accent) 45%,transparent);
+}
+.card.hide{display:none}
+
+/* Media area */
+.card-media{position:relative;height:190px;overflow:hidden}
+.card-media img,
+.card-media .media-fallback{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.card:hover .card-media img,
+.card:hover .card-media .media-fallback{transform:scale(1.1)}
+.media-fallback{
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;
+  background:
+    radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--accent) 60%,transparent),transparent 60%),
+    linear-gradient(135deg,color-mix(in srgb,var(--accent) 35%,#05070f),#05070f);
+}
+.media-fallback .glyph{
+  width:74px;height:74px;border-radius:20px;display:grid;place-items:center;
+  font-family:var(--font-title);font-weight:900;font-size:1.8rem;color:#fff;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(10px);box-shadow:0 0 30px color-mix(in srgb,var(--accent) 60%,transparent);
+}
+.media-fallback .brand{font-family:var(--font-title);font-weight:800;font-size:1.1rem;letter-spacing:.5px;direction:ltr}
+.card-media::after{
+  content:"";position:absolute;inset:auto 0 0 0;height:60%;
+  background:linear-gradient(transparent,rgba(5,7,15,.85));
+}
+.ribbon{
+  position:absolute;top:14px;right:14px;z-index:2;
+  font-size:.78rem;font-weight:700;padding:.3rem .8rem;border-radius:999px;
+  background:rgba(5,7,15,.6);border:1px solid var(--accent);color:#fff;
+  backdrop-filter:blur(8px);
+}
+
+.card-body{padding:1.5rem;display:flex;flex-direction:column;flex:1}
+.card-tag{
+  align-self:flex-start;font-size:.8rem;font-weight:700;color:var(--accent);
+  padding:.2rem .75rem;border-radius:8px;margin-bottom:.6rem;
+  background:color-mix(in srgb,var(--accent) 14%,transparent);
+}
+.card-title{font-size:1.35rem;margin-bottom:.8rem}
+.price{display:flex;align-items:baseline;gap:.4rem;margin-bottom:1.1rem}
+.price strong{font-family:var(--font-title);font-size:2.1rem;font-weight:900}
+.price .cur{font-weight:700;color:var(--accent)}
+.price small{color:var(--muted)}
+.price del{color:var(--muted);font-size:.95rem;margin-inline-start:.4rem}
+.features{list-style:none;margin-bottom:1.5rem;flex:1}
+.features li{display:flex;align-items:flex-start;gap:.6rem;padding:.35rem 0;color:#c4cde0;font-size:.97rem}
+.features svg{flex-shrink:0;width:18px;height:18px;margin-top:4px;color:var(--accent)}
+.order-btn{width:100%}
+
+/* =========================================================
+   5. HOW IT WORKS
+   ========================================================= */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;counter-reset:s}
+.step{padding:2rem 1.6rem;border-radius:var(--radius);position:relative;transition:transform .3s}
+.step:hover{transform:translateY(-6px)}
+.step::before{
+  counter-increment:s;content:counter(s);
+  position:absolute;top:1.2rem;left:1.4rem;
+  font-family:var(--font-title);font-size:3rem;font-weight:900;color:rgba(255,255,255,.05);
+}
+.step-icon{
+  width:56px;height:56px;border-radius:16px;display:grid;place-items:center;margin-bottom:1.2rem;
+  background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(34,211,238,.2));
+  border:1px solid rgba(34,211,238,.3);
+}
+.step-icon svg{width:26px;height:26px;color:var(--cyan)}
+.step h3{font-size:1.15rem;margin-bottom:.4rem}
+.step p{color:var(--muted);font-size:.97rem}
+
+/* =========================================================
+   6. PAYMENT METHODS
+   ========================================================= */
+.payments{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
+.pay{
+  padding:1.8rem 1.5rem;border-radius:var(--radius);text-align:center;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.pay:hover{transform:translateY(-6px);border-color:rgba(34,211,238,.4);box-shadow:var(--glow)}
+.pay-logo{
+  width:74px;height:74px;margin:0 auto 1rem;border-radius:20px;display:grid;place-items:center;
+  font-family:var(--font-title);font-weight:900;font-size:1.25rem;direction:ltr;
+}
+.pay h3{font-size:1.15rem;margin-bottom:.3rem}
+.pay p{color:var(--muted);font-size:.93rem}
+.trust-bar{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:1rem 2.5rem;
+  margin-top:44px;padding:1.3rem 2rem;border-radius:999px;
+}
+.trust-bar div{display:flex;align-items:center;gap:.55rem;font-weight:500;color:#c4cde0}
+.trust-bar svg{width:20px;height:20px;color:var(--emerald-2)}
+
+/* =========================================================
+   7. FAQ
+   ========================================================= */
+.faq{max-width:800px;margin-inline:auto;display:grid;gap:14px}
+.faq-item{border-radius:18px;overflow:hidden}
+.faq-q{
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  padding:1.2rem 1.5rem;background:none;border:none;color:var(--text);cursor:pointer;
+  font-family:var(--font-title);font-weight:700;font-size:1.05rem;text-align:right;
+}
+.faq-q svg{width:20px;height:20px;flex-shrink:0;transition:transform .3s;color:var(--cyan)}
+.faq-item.open .faq-q svg{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a p{padding:0 1.5rem 1.3rem;color:var(--muted)}
+
+/* =========================================================
+   8. CTA BANNER + FOOTER
+   ========================================================= */
+.cta-banner{
+  text-align:center;padding:4rem 2rem;border-radius:32px;position:relative;overflow:hidden;
+}
+.cta-banner::before{
+  content:"";position:absolute;inset:-50%;z-index:-1;
+  background:conic-gradient(from 0deg,transparent,rgba(16,185,129,.25),transparent,rgba(34,211,238,.25),transparent);
+  animation:spin 12s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cta-banner h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:.8rem}
+.cta-banner p{color:#c4cde0;margin-bottom:2rem}
+
+footer{padding:50px 0 30px;border-top:1px solid var(--border);margin-top:40px}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;align-items:center}
+.foot p{color:var(--muted);font-size:.93rem}
+.socials{display:flex;gap:.8rem}
+.socials a{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  transition:transform .25s,border-color .25s;
+}
+.socials a:hover{transform:translateY(-3px);border-color:var(--cyan)}
+.socials svg{width:20px;height:20px}
+
+/* Floating WhatsApp button */
+.wa-float{
+  position:fixed;bottom:24px;left:24px;z-index:99;
+  width:62px;height:62px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#25d366,#10b981);color:#fff;
+  box-shadow:0 10px 30px rgba(37,211,102,.45);transition:transform .25s;
+}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float::before{
+  content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #25d366;
+  animation:ring 2s infinite;
+}
+@keyframes ring{to{transform:scale(1.6);opacity:0}}
+.wa-float svg{width:30px;height:30px}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* =========================================================
+   9. RESPONSIVE
+   ========================================================= */
+@media (max-width:900px){
+  .nav-links,.nav-cta{display:none}
+  .burger{display:block}
+  .nav-links.open{
+    display:flex;flex-direction:column;gap:1.2rem;position:absolute;top:calc(100% + 10px);
+    inset-inline:4%;padding:1.6rem;border-radius:20px;
+    background:rgba(5,7,15,.95);border:1px solid var(--border);backdrop-filter:blur(16px);
+  }
+}
+@media (max-width:600px){
+  section{padding:70px 0}
+  .hero-stats{grid-template-columns:1fr;gap:1.2rem}
+  .grid{grid-template-columns:1fr}
+  .trust-bar{border-radius:24px}
+  .foot{flex-direction:column;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner glass">
+      <!-- ✏️ REPLACE: store name -->
+      <a href="#" class="logo"><span class="logo-dot"></span> Digi<span class="grad-text">TN</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#products">العروض</a></li>
+        <li><a href="#how">كيف تطلب</a></li>
+        <li><a href="#payment">طرق الدفع</a></li>
+        <li><a href="#faq">الأسئلة الشائعة</a></li>
+      </ul>
+      <a href="#" class="btn btn-primary nav-cta" data-wa-general>تواصل معنا</a>
+      <button class="burger" id="burger" aria-label="القائمة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <!--
+    ✏️ REPLACE VIDEO URL BELOW
+    Download a free tech/abstract loop from pexels.com/videos or mixkit.co
+    (search "digital", "network", "neon"), compress it to ~3–6 MB,
+    and put it at the path below. The neon grid fallback shows until it loads.
+  -->
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="">
+    <source src="assets/hero-bg.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-fallback"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="container hero-content">
+    <div class="hero-badge glass"><span></span> تفعيل فوري خلال دقائق • دعم 7/7</div>
+    <h1>متجرك الأول <span class="grad-text">للاشتراكات الرقمية</span> في تونس</h1>
+    <p>ChatGPT Plus، Netflix، Spotify، Canva وأكثر… اشتراكات أصلية بأسعار بالدينار التونسي، ودفع محلي سهل وآمن.</p>
+    <div class="hero-actions">
+      <a href="#products" class="btn btn-primary">
+        استكشف العروض
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      </a>
+      <a href="#how" class="btn btn-ghost">كيف نخدمو؟</a>
+    </div>
+
+    <div class="hero-stats glass reveal">
+      <!-- ✏️ REPLACE: your real numbers -->
+      <div class="stat"><strong class="grad-text" data-count="2500">0</strong><small>حريف راضي</small></div>
+      <div class="stat"><strong class="grad-text" data-count="15">0</strong><small>دقيقة متوسط التفعيل</small></div>
+      <div class="stat"><strong class="grad-text" data-count="24">0</strong><small>ساعة دعم عبر واتساب</small></div>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true"></div>
+</header>
+
+<main>
+<!-- ================= PRODUCTS ================= -->
+<section id="products">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">عروضنا</span>
+      <h2>اختار <span class="grad-text">اشتراكك</span> المفضل</h2>
+      <p>كل الاشتراكات مضمونة طول المدة، مع استبدال مجاني في حالة أي مشكل.</p>
+    </div>
+
+    <div class="filters reveal" id="filters">
+      <button class="filter-btn active" data-filter="all">الكل</button>
+      <button class="filter-btn" data-filter="ai">ذكاء اصطناعي</button>
+      <button class="filter-btn" data-filter="streaming">أفلام ومسلسلات</button>
+      <button class="filter-btn" data-filter="music">موسيقى</button>
+      <button class="filter-btn" data-filter="design">تصميم</button>
+      <button class="filter-btn" data-filter="tv">IPTV</button>
+    </div>
+
+    <!-- Cards are generated by JavaScript from the PRODUCTS array -->
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section id="how">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">بسيطة برشا</span>
+      <h2>كيفاش <span class="grad-text">تطلب</span>؟</h2>
+      <p>أربع خطوات وتولي عندك اشتراكك.</p>
+    </div>
+    <div class="steps">
+      <div class="step glass reveal">
+        <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>اختار العرض</h3><p>تصفح الاشتراكات واختار اللي يناسبك.</p>
+      </div>
+      <div class="step glass reveal">
+        <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg></div>
+        <h3>اضغط «اطلب الآن»</h3><p>توصلنا رسالة واتساب جاهزة فيها تفاصيل طلبك.</p>
+      </div>
+      <div class="step glass reveal">
+        <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20M6 15h4"/></svg></div>
+        <h3>ادفع محلياً</h3><p>Flouci، D17، تحويل بنكي أو نقداً.</p>
+      </div>
+      <div class="step glass reveal">
+        <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+        <h3>تفعيل فوري</h3><p>نبعثولك بيانات الدخول في دقائق.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAYMENT METHODS ================= -->
+<section id="payment">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">دفع آمن 100%</span>
+      <h2>طرق <span class="grad-text">الدفع</span> المتوفرة</h2>
+      <p>خلّص بالطريقة اللي تريحك، كلها محلية وبالدينار التونسي.</p>
+    </div>
+    <!--
+      ✏️ OPTIONAL: replace the text badges below with the official logo images
+      of each payment provider (use their press/brand kits) via <img src="...">.
+    -->
+    <div class="payments">
+      <div class="pay glass reveal">
+        <div class="pay-logo" style="background:linear-gradient(135deg,#0ea5e9,#22d3ee);color:#03141f">Flouci</div>
+        <h3>Flouci</h3><p>دفع فوري من تطبيق Flouci للمحفظة الإلكترونية.</p>
+      </div>
+      <div class="pay glass reveal">
+        <div class="pay-logo" style="background:linear-gradient(135deg,#f59e0b,#facc15);color:#1f1403">D17</div>
+        <h3>D17</h3><p>تحويل سريع عبر تطبيق D17 للبريد التونسي.</p>
+      </div>
+      <div class="pay glass reveal">
+        <div class="pay-logo" style="background:linear-gradient(135deg,#10b981,#34d399);color:#03140f">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 4l9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>
+        </div>
+        <h3>تحويل بنكي / بريدي</h3><p>Virement بنكي أو بريدي، نبعثولك RIB على واتساب.</p>
+      </div>
+      <div class="pay glass reveal">
+        <div class="pay-logo" style="background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
+        </div>
+        <h3>نقداً</h3><p>الدفع نقداً عند الاستلام أو في نقطة البيع.</p>
+      </div>
+    </div>
+
+    <div class="trust-bar glass reveal">
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> ضمان طول المدة</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> تفعيل في دقائق</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> استبدال مجاني</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg> دعم واتساب 7/7</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">عندك سؤال؟</span>
+      <h2>الأسئلة <span class="grad-text">الشائعة</span></h2>
+    </div>
+    <div class="faq" id="faqList">
+      <!-- ✏️ EDIT: answers to match your actual policies -->
+      <div class="faq-item glass reveal">
+        <button class="faq-q">قداش ياخو التفعيل من وقت؟<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>عادة بين 5 و 30 دقيقة بعد تأكيد الدفع، في أوقات العمل.</p></div>
+      </div>
+      <div class="faq-item glass reveal">
+        <button class="faq-q">شنوة الفرق بين حساب شخصي وحساب مشترك؟<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>الحساب الشخصي متاع ليك وحدك وتنجم تبدل كلمة السر. المشترك يكون عندك فيه بروفايل خاص بسعر أرخص.</p></div>
+      </div>
+      <div class="faq-item glass reveal">
+        <button class="faq-q">شنوة يصير كان الاشتراك وقف؟<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>تبعثلنا على واتساب ونعوضوهولك مجاناً طول مدة الاشتراك.</p></div>
+      </div>
+      <div class="faq-item glass reveal">
+        <button class="faq-q">نجم نجدد الاشتراك بعد ما يوفى؟<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>أكيد، نبعثولك تذكير قبل نهاية المدة وتجدد بنفس الحساب.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BANNER ================= -->
+<section style="padding-top:20px">
+  <div class="container">
+    <div class="cta-banner glass reveal">
+      <h2>ما لقيتش الاشتراك اللي تحب عليه؟</h2>
+      <p>ابعثلنا على واتساب ونوفرولك أي خدمة رقمية تحتاجها.</p>
+      <a href="#" class="btn btn-primary" data-wa-general>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg>
+        كلمنا على واتساب
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container foot">
+    <a href="#" class="logo"><span class="logo-dot"></span> Digi<span class="grad-text">TN</span></a>
+    <p>© <span id="year"></span> DigiTN — جميع الحقوق محفوظة. جميع العلامات التجارية ملك لأصحابها.</p>
+    <!-- ✏️ REPLACE: social links -->
+    <div class="socials">
+      <a href="https://www.facebook.com/digitalAbonnement" target="_blank" rel="noopener" class="glass" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V10H6v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/></svg></a>
+      <a href="#" class="glass" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
+      <a href="#" class="glass" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3a5 5 0 0 0 5 5"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp button -->
+<a href="#" class="wa-float" data-wa-general aria-label="واتساب">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/><path d="M9 10c.5 2 2 3.5 4 4l1-1 2 1c-.3 1-1.2 1.5-2 1.5C11 15.5 8.5 13 8.5 10c0-.8.5-1.7 1.5-2l1 2z"/></svg>
+</a>
+
+<script>
+/* =========================================================
+   ✏️ CONFIG — EDIT THESE VALUES
+   ========================================================= */
+// WhatsApp number in international format, digits only (216 = Tunisia).
+const WHATSAPP_NUMBER = "21625103206"; // WhatsApp: +216 25 103 206
+
+/*
+  PRODUCTS — add / remove / edit items here.
+  - image: ✏️ REPLACE "" with your own image URL (e.g. "assets/chatgpt.jpg").
+           Use images you have the right to use. If left empty, a styled
+           gradient banner with the glyph + brand name is shown instead.
+  - accent: card glow colour
+  - category: ai | streaming | music | design | tv  (matches the filter buttons)
+  - Prices are examples — set your own.
+*/
+const PRODUCTS = [
+  {
+    name: "ChatGPT Plus", tag: "حساب شخصي", category: "ai",
+    price: 45, oldPrice: 60, period: "شهر", ribbon: "الأكثر طلباً 🔥",
+    accent: "#10b981", glyph: "AI", image: "",
+    features: ["وصول لأحدث النماذج", "توليد الصور وتحليل الملفات", "أولوية في أوقات الضغط", "حساب باسمك وكلمة سر خاصة"]
+  },
+  {
+    name: "Netflix Premium", tag: "بروفايل خاص 4K", category: "streaming",
+    price: 18, oldPrice: 25, period: "شهر", ribbon: "جودة 4K",
+    accent: "#ef4444", glyph: "N", image: "",
+    features: ["جودة Ultra HD 4K", "بروفايل خاص بيك وحدك", "يخدم على TV، تلفون و PC", "ضمان طول المدة"]
+  },
+  {
+    name: "Spotify Premium", tag: "حساب شخصي", category: "music",
+    price: 12, period: "شهر",
+    accent: "#22c55e", glyph: "♪", image: "",
+    features: ["موسيقى بلا إعلانات", "تحميل الأغاني بلا إنترنت", "جودة صوت عالية", "يتجدد على حسابك القديم"]
+  },
+  {
+    name: "Canva Pro", tag: "حساب شخصي", category: "design",
+    price: 15, period: "شهر",
+    accent: "#a855f7", glyph: "C", image: "",
+    features: ["ملايين القوالب والصور المميزة", "إزالة الخلفية بنقرة", "Brand Kit كامل", "مثالي للمصممين والصفحات"]
+  },
+  {
+    name: "YouTube Premium", tag: "حساب شخصي", category: "streaming",
+    price: 14, period: "شهر",
+    accent: "#f43f5e", glyph: "▶", image: "",
+    features: ["فيديوهات بلا إعلانات", "تشغيل في الخلفية", "YouTube Music مشمول", "تحميل الفيديوهات"]
+  },
+  {
+    name: "IPTV Premium", tag: "اشتراك 12 شهر", category: "tv",
+    price: 90, oldPrice: 120, period: "عام", ribbon: "عرض سنوي",
+    accent: "#22d3ee", glyph: "TV", image: "",
+    features: ["آلاف القنوات بجودة HD/4K", "يخدم على Smart TV و Android", "استقرار عالي بلا تقطيع", "دعم تقني للتركيب"]
+  }
+];
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const waLink = (msg) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+const checkIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+const chatIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg>`;
+
+/* =========================================================
+   RENDER PRODUCT CARDS
+   ========================================================= */
+const grid = document.getElementById("grid");
+
+grid.innerHTML = PRODUCTS.map(p => {
+  // Pre-filled WhatsApp order message (Tunisian dialect)
+  const msg =
+`مرحبا 👋
+نحب نطلب الاشتراك هذا:
+🛒 ${p.name} - ${p.tag}
+💰 السعر: ${p.price} TND / ${p.period}
+💳 طريقة الدفع: (Flouci / D17 / تحويل / نقداً)
+يعيشك!`;
+
+  const media = p.image
+    ? `<img src="${p.image}" alt="${p.name}" loading="lazy">`
+    : `<div class="media-fallback"><div class="glyph">${p.glyph}</div><div class="brand">${p.name}</div></div>`;
+
+  return `
+  <article class="card glass reveal" data-cat="${p.category}" style="--accent:${p.accent}">
+    <div class="card-media">
+      ${p.ribbon ? `<span class="ribbon">${p.ribbon}</span>` : ""}
+      ${media}
+    </div>
+    <div class="card-body">
+      <span class="card-tag">${p.tag}</span>
+      <h3 class="card-title"><span dir="ltr">${p.name}</span> - ${p.tag}</h3>
+      <div class="price">
+        <strong>${p.price}</strong><span class="cur">TND</span><small>/ ${p.period}</small>
+        ${p.oldPrice ? `<del>${p.oldPrice} TND</del>` : ""}
+      </div>
+      <ul class="features">
+        ${p.features.map(f => `<li>${checkIcon}<span>${f}</span></li>`).join("")}
+      </ul>
+      <a class="btn btn-primary order-btn" href="${waLink(msg)}" target="_blank" rel="noopener">
+        ${chatIcon} اطلب الآن
+      </a>
+    </div>
+  </article>`;
+}).join("");
+
+/* General WhatsApp links (navbar, CTA, floating button) */
+document.querySelectorAll("[data-wa-general]").forEach(a => {
+  a.href = waLink("مرحبا 👋 عندي سؤال على الاشتراكات المتوفرة.");
+  a.target = "_blank"; a.rel = "noopener";
+});
+
+/* =========================================================
+   CATEGORY FILTER
+   ========================================================= */
+document.getElementById("filters").addEventListener("click", e => {
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b === btn));
+  const f = btn.dataset.filter;
+  grid.querySelectorAll(".card").forEach(c => {
+    c.classList.toggle("hide", f !== "all" && c.dataset.cat !== f);
+  });
+});
+
+/* =========================================================
+   NAVBAR: scroll style + mobile menu
+   ========================================================= */
+const nav = document.getElementById("nav");
+window.addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 40), { passive: true });
+
+const links = document.getElementById("navLinks");
+document.getElementById("burger").addEventListener("click", () => links.classList.toggle("open"));
+links.querySelectorAll("a").forEach(a => a.addEventListener("click", () => links.classList.remove("open")));
+
+/* =========================================================
+   FAQ ACCORDION
+   ========================================================= */
+document.querySelectorAll(".faq-item").forEach(item => {
+  item.querySelector(".faq-q").addEventListener("click", () => {
+    const open = item.classList.toggle("open");
+    const ans = item.querySelector(".faq-a");
+    ans.style.maxHeight = open ? ans.scrollHeight + "px" : 0;
+  });
+});
+
+/* =========================================================
+   SCROLL REVEAL + COUNTERS
+   ========================================================= */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    en.target.classList.add("visible");
+    en.target.querySelectorAll("[data-count]").forEach(countUp);
+    io.unobserve(en.target);
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll(".reveal").forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.08 + "s";
+  io.observe(el);
+});
+
+function countUp(el) {
+  const target = +el.dataset.count, dur = 1600, start = performance.now();
+  const tick = now => {
+    const p = Math.min((now - start) / dur, 1);
+    el.textContent = "+" + Math.floor(target * (1 - Math.pow(1 - p, 3))).toLocaleString("en");
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
